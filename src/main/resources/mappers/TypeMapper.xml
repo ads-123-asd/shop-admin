@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC  
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+   
+<mapper namespace="com.fh.shop.admin.mapper.type.ITypeMapper">
+
+    <!--查询所有数据-->
+    <select id="queryTypeList" resultType="com.fh.shop.admin.po.Type">
+      select id,name,pid  from  t_type
+    </select>
+
+    <!--增加分类-->
+    <insert id="addType" parameterType="com.fh.shop.admin.po.Type">
+        <selectKey keyProperty="id" resultType="long" order="AFTER">
+            select last_insert_id()
+        </selectKey>
+        insert into  t_type (name,pid) values(#{name},#{pid})
+    </insert>
+
+    <!--删除分类-->
+    <delete id="deleteNodes">
+        delete from t_type  where id in
+        <foreach collection="list"   open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--回显-->
+    <select id="findType" resultType="com.fh.shop.admin.po.Type">
+      select id,name,pid from  t_type  where id=#{id}
+    </select>
+
+    <!--修改-->
+    <update id="updateType" parameterType="com.fh.shop.admin.po.Type">
+      update t_type set  name=#{name}  where id=#{id}
+    </update>
+
+    <!--查询顶级父级Id-->
+    <select id="findTypeSelect" resultType="com.fh.shop.admin.po.Type">
+      select  id,name,pid from  t_type where pid=#{id}
+    </select>
+
+</mapper>
